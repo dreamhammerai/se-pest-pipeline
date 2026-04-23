@@ -1,0 +1,279 @@
+{
+  "generated_at": "2026-04-23T05:00:00-04:00",
+  "scrape_date": "2026-04-23",
+  "prev_scrape_date": "2026-04-18",
+  "sheet_file_id": "1fEwOyWvcLLJYhr9JjhXL1SGuP6nShrnWz9Hg2VJagUc",
+  "stages": ["New", "Interested", "Contacted", "Diligence", "Under Contract", "Passed"],
+  "summary": {
+    "total_listings": 12,
+    "new_today": 1,
+    "price_changes": 0,
+    "removed_today": 0,
+    "stale_7d_plus": 0,
+    "total_combined_sde": 4728256,
+    "total_combined_asking": 21157599
+  },
+  "listings": [
+    {
+      "id": "al-baldwin-multistate-bq2447968",
+      "headline": "Multi-State Commercial Landscape & Pest Control (100% Recurring Revenue Under Contract)",
+      "city": "Baldwin County",
+      "state": "AL",
+      "asking": 8000000,
+      "revenue": null,
+      "sde": 1000000,
+      "broker": "BizQuest",
+      "url": "https://www.bizquest.com/business-for-sale/multi-state-commercial-landscape-pest-control-100-recurring-revenue/BW2447968/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "HEADLINE DEAL. 100% recurring revenue under contract. Multi-state operation. Financing available. 8x SDE multiple = platform valuation, not a lifestyle deal. Ideal roll-up platform.",
+      "your_stage": "Under Contract",
+      "user_notes": "Under Contract",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 8000000, "sde": 1000000},
+        {"date": "2026-04-18", "asking": 8000000, "sde": 1000000},
+        {"date": "2026-04-23", "asking": 8000000, "sde": 1000000}
+      ]
+    },
+    {
+      "id": "fl-tampa-rodent-pest-bfs3868672",
+      "headline": "Full-Service Rodent And Pest Control Business In Tampa",
+      "city": "Tampa",
+      "state": "FL",
+      "asking": 194900,
+      "revenue": 1496716,
+      "sde": 291684,
+      "broker": "BusinessesForSale.com",
+      "url": "https://us.businessesforsale.com/us/full-service-rodent-and-pest-control-business-in-tampa.aspx",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "INCREDIBLE VALUE: 0.67x SDE multiple. $1.5M revenue, $292K cash flow on $195K asking. Residential + commercial. High recurring consumer revenue. Verify with broker — this price suggests distress or a listing error.",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 194900, "sde": 291684},
+        {"date": "2026-04-18", "asking": 194900, "sde": 291684},
+        {"date": "2026-04-23", "asking": 194900, "sde": 291684}
+      ]
+    },
+    {
+      "id": "tn-murfreesboro-home-services-2468993",
+      "headline": "Recession Resistant Home Services Business",
+      "city": "Murfreesboro",
+      "state": "TN",
+      "asking": 274900,
+      "revenue": null,
+      "sde": 234916,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/recession-resistant-home-services-business/2468993/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "1.17x SDE — tight multiple. 'Recession-resistant home services' framing — confirm pest-control classification.",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 274900, "sde": 234916},
+        {"date": "2026-04-23", "asking": 274900, "sde": 234916}
+      ]
+    },
+    {
+      "id": "ga-marietta-residential-pest-bfs3936476",
+      "headline": "Residential Pest Control With Ongoing Revenue (Marietta)",
+      "city": "Marietta",
+      "state": "GA",
+      "asking": 210000,
+      "revenue": 768904,
+      "sde": 203615,
+      "broker": "BusinessesForSale.com",
+      "url": "https://us.businessesforsale.com/us/residential-pest-control-with-ongoing-revenue.aspx",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "1.03x SDE — near-absurd value. $769K revenue, recurring-route model (monthly/quarterly). Est. 2018. Marietta/Atlanta metro.",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 210000, "sde": 203615},
+        {"date": "2026-04-23", "asking": 210000, "sde": 203615}
+      ]
+    },
+    {
+      "id": "al-birmingham-repeat-customers-2488476",
+      "headline": "Predictable Income from Repeat Customers (Birmingham)",
+      "city": "Birmingham",
+      "state": "AL",
+      "asking": 212900,
+      "revenue": null,
+      "sde": 203210,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/predictable-income-from-repeat-customers/2488476/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "1.05x SDE. 'Predictable income / repeat customers' = high recurring mix. Confirm customer retention rate.",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 212900, "sde": 203210},
+        {"date": "2026-04-23", "asking": 212900, "sde": 203210}
+      ]
+    },
+    {
+      "id": "tn-chattanooga-absentee-2404666",
+      "headline": "Absentee owner / 35% Cash Flow / Solid clientele / Non owner dependant",
+      "city": "Chattanooga",
+      "state": "TN",
+      "asking": 875000,
+      "revenue": null,
+      "sde": 250000,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/absentee-owner-35-cash-flow-solid-clientele-non-owner-dependant/2404666/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "Absentee-owner structure, 35% cash flow margin, non owner-dependent. 3.5x SDE. Best fit for semi-passive buyers.",
+      "your_stage": "Interested",
+      "user_notes": "Favorite",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 875000, "sde": 250000},
+        {"date": "2026-04-23", "asking": 875000, "sde": 250000}
+      ]
+    },
+    {
+      "id": "tn-sevier-elite-k9-bq2490325",
+      "headline": "Elite K-9 Pest Detection Service - Hospitality Market (Smoky Mtns)",
+      "city": "Sevier County",
+      "state": "TN",
+      "asking": 750000,
+      "revenue": null,
+      "sde": 204181,
+      "broker": "BizQuest",
+      "url": "https://www.bizquest.com/business-for-sale/elite-k-9-pest-detection-service-hospitality-market-smoky-mtns/BW2490325/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "Niche: K-9 bed bug detection for hospitality market (Gatlinburg/Pigeon Forge). 3.67x SDE. High-margin specialty service with strong reputation.",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 750000, "sde": 204181},
+        {"date": "2026-04-23", "asking": 750000, "sde": 204181}
+      ]
+    },
+    {
+      "id": "fl-bradenton-scalable-lawn-pest-bq2465366",
+      "headline": "Scalable Lawn Care & Pest Control Co. in High-Demand Area (Bradenton)",
+      "city": "Bradenton",
+      "state": "FL",
+      "asking": 1700000,
+      "revenue": 1455638,
+      "sde": 273195,
+      "broker": "BizQuest",
+      "url": "https://www.bizquest.com/business-for-sale/scalable-lawn-care-pest-control-co-in-high-demand-area/BW2465366/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "Full-service lawn + pest. Combined revenue base. 6.2x SDE — priced high vs. the Tampa listing. Overlaps with Bradenton market. Cross-listed on BusinessesForSale.com (bfs3906973).",
+      "your_stage": "Contacted",
+      "user_notes": "Contacted",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 1700000, "sde": 273195},
+        {"date": "2026-04-23", "asking": 1700000, "sde": 273195}
+      ]
+    },
+    {
+      "id": "fl-collier-established-lawn-service-2495946",
+      "headline": "Established Lawn Service – 40 Years, High-End Clients",
+      "city": "Collier County",
+      "state": "FL",
+      "asking": 4595000,
+      "revenue": null,
+      "sde": 1075877,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/established-lawn-service-40-years-high-end-clients/2495946/",
+      "first_seen": "2026-04-23",
+      "change": "new",
+      "scrape_notes": "NEW 2026-04-23. Lawn service (not strict pest) appearing on FL pest-control results. 40-year operating history. High-end clients. 4.27x SDE. Large CF but classification suggests landscape, not pest.",
+      "your_stage": "",
+      "user_notes": "",
+      "last_touched": "",
+      "price_history": [
+        {"date": "2026-04-23", "asking": 4595000, "sde": 1075877}
+      ]
+    },
+    {
+      "id": "nc-raleigh-wildlife-2492587",
+      "headline": "Specialty Wildlife Control Business w/ Multi-Revenue Streams - Raleigh",
+      "city": "Raleigh",
+      "state": "NC",
+      "asking": 229899,
+      "revenue": null,
+      "sde": 213690,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/specialty-wildlife-control-business-w-multi-revenue-streams-raleigh/2492587/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "1.08x SDE — very tight asking. Wildlife (not strict pest) with multiple revenue streams. Raleigh Triangle market. Newly listed.",
+      "your_stage": "Passed",
+      "user_notes": "Offers too many services",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 229899, "sde": 213690},
+        {"date": "2026-04-23", "asking": 229899, "sde": 213690}
+      ]
+    },
+    {
+      "id": "fl-bradenton-commercial-landscape-2471958",
+      "headline": "FL Commercial Landscape Maintenance | $3M+ Revenue | Platform-Ready",
+      "city": "Bradenton",
+      "state": "FL",
+      "asking": 3300000,
+      "revenue": 3000000,
+      "sde": 572000,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/fl-commercial-landscape-maintenance-3m-revenue-platform-ready/2471958/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "Labeled 'Commercial Landscape' — appears on pest-control results page. Serves Tampa Bay. $3M revenue, platform-framing suggests roll-up target.",
+      "your_stage": "Passed",
+      "user_notes": "Not Pest",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 3300000, "sde": 572000},
+        {"date": "2026-04-23", "asking": 3300000, "sde": 572000}
+      ]
+    },
+    {
+      "id": "fl-lake-worth-route-landscape-2468195",
+      "headline": "Route Dense Commercial Landscaping with 80% Recurring Contracts",
+      "city": "Lake Worth",
+      "state": "FL",
+      "asking": 815000,
+      "revenue": null,
+      "sde": 205765,
+      "broker": "BizBuySell",
+      "url": "https://www.bizbuysell.com/business-opportunity/route-dense-commercial-landscaping-with-80-recurring-contracts/2468195/",
+      "first_seen": "2026-04-17",
+      "change": "confirmed",
+      "scrape_notes": "Commercial landscaping (cross-listed on pest-control search). 80% recurring contracts. Route density = tuck-in candidate.",
+      "your_stage": "Passed",
+      "user_notes": "Not enough cashflow",
+      "last_touched": "2026-04-17",
+      "price_history": [
+        {"date": "2026-04-17", "asking": 815000, "sde": 205765},
+        {"date": "2026-04-23", "asking": 815000, "sde": 205765}
+      ]
+    }
+  ],
+  "followups": [
+    {"headline": "Mosquito Hunters/Pest Hunters/Humbug Franchise — Prime FL Territories", "state": "FL", "signal": "$50K asking asset sale; no CF listed", "broker": "BizBuySell", "url": "https://www.bizbuysell.com/business-asset/mosquito-hunters-pest-hunters-humbug-franchise-in-prime-fl-territories/2351974/"},
+    {"headline": "Animal Trapping, Sealing, and Cleanup Across Two Regions (Hamilton Co.)", "state": "TN", "signal": "$415K asking / $160K CF — below $200K threshold", "broker": "BizQuest", "url": "https://www.bizquest.com/business-for-sale/animal-trapping-sealing-and-cleanup-across-two-regions/BW2482098/"},
+    {"headline": "Landscaping, Tree Trimming, Pest Control (Miami-Dade, est. 1994)", "state": "FL", "signal": "$1.2M asking / $154,910 CF — below threshold", "broker": "BusinessesForSale.com", "url": "https://us.businessesforsale.com/us/landscaping-tree-trimming-pest-control.aspx"},
+    {"headline": "Multi-Revenue Stream Wildlife Control (Charlotte)", "state": "NC", "signal": "$259,900 asking / $189,900 CF — just below threshold", "broker": "BizBuySell", "url": "https://www.bizbuysell.com/business-opportunity/multi-revenue-stream-speciality-wildlife-control-business/2274916/"},
+    {"headline": "Residential Pest Service With Repeat Accounts (Orlando)", "state": "FL", "signal": "$200K asking / $194,907 CF — just below $200K threshold", "broker": "BusinessesForSale.com", "url": "https://us.businessesforsale.com/us/residential-pest-service-with-repeat-accounts.aspx"},
+    {"headline": "Established 30+ Year Lawn Maintenance | 200+ Accounts (Palm Beach)", "state": "FL", "signal": "$360K asking / $155,039 CF — below threshold", "broker": "BizQuest", "url": "https://www.bizquest.com/business-for-sale/established-30-year-lawn-maintenance-business-200-accounts/BW2487582/"}
+  ]
+}
