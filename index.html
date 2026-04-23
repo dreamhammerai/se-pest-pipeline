@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SE Pest Control — Pipeline</title>
+<meta name="description" content="Southeast US pest-control acquisition pipeline — daily scrape of FL/GA/AL/SC/NC/TN listings above $200K cash flow." />
+<meta property="og:title" content="SE Pest Control — Pipeline" />
+<meta property="og:description" content="Daily pest-control deal scrape. 12 active listings. $4.7M combined SDE." />
+<meta property="og:type" content="website" />
+<meta name="theme-color" content="#4f46e5" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%234f46e5'/%3E%3Ctext x='50%25' y='55%25' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='18' fill='white' dominant-baseline='middle'%3EP%3C/text%3E%3C/svg%3E" />
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --ink: #0f172a;
+    --ink-muted: #475569;
+    --ink-faint: #64748b;
+    --brand: #4f46e5;
+    --brand-ink: #3730a3;
+    --brand-soft: #eef2ff;
+    --green: #16a34a;
+    --green-soft: #dcfce7;
+    --amber: #d97706;
+    --amber-soft: #fef3c7;
+    --red: #dc2626;
+    --red-soft: #fee2e2;
+    --blue: #0284c7;
+    --blue-soft: #e0f2fe;
+    --gray-soft: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --bg: #0f172a;
+      --panel: #1e293b;
+      --border: #334155;
+      --border-strong: #475569;
+      --ink: #f1f5f9;
+      --ink-muted: #cbd5e1;
+      --ink-faint: #94a3b8;
+      --brand: #818cf8;
+      --brand-ink: #c7d2fe;
+      --brand-soft: #312e81;
+      --green: #4ade80;
+      --green-soft: #14532d;
+      --amber: #fbbf24;
+      --amber-soft: #78350f;
+      --red: #f87171;
+      --red-soft: #7f1d1d;
+      --blue: #38bdf8;
+      --blue-soft: #0c4a6e;
+      --gray-soft: #334155;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1400px; margin: 0 auto; padding: 18px 22px 60px; }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .title-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.015em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 .dot { width: 9px; height: 9px; background: var(--brand); border-radius: 50%; display: inline-block; }
+  .date-chip {
+    font-size: 12px;
+    color: var(--ink-muted);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-weight: 500;
+  }
+  .updated {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+  }
+  .summary {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11.5px;
+  }
+  .summary .s-pill {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 9px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+  .summary .s-pill strong { color: var(--ink); font-weight: 600; margin-right: 4px; }
+  .summary .s-pill.hot { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .summary .s-pill.hot strong { color: var(--green); }
+
+  .tabs {
+    display: inline-flex;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3px;
+    margin-bottom: 16px;
+  }
+  .tabs button {
+    background: transparent;
+    border: 0;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .tabs button.active { background: var(--brand); color: white; }
+  .tabs button:hover:not(.active) { color: var(--ink); }
+  .tabs .count {
+    display: inline-block;
+    margin-left: 6px;
+    font-size: 10.5px;
+    background: rgba(255,255,255,0.22);
+    padding: 1px 6px;
+    border-radius: 999px;
+  }
+  .tabs button:not(.active) .count { background: var(--gray-soft); color: var(--ink-faint); }
+
+  .kanban {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 270px;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scroll-snap-type: x proximity;
+  }
+  .kcol {
+    background: var(--gray-soft);
+    border-radius: 12px;
+    padding: 12px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    scroll-snap-align: start;
+  }
+  .kcol-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    padding: 0 2px 6px;
+  }
+  .kcol-head .ct {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 1px 8px;
+    font-size: 10.5px;
+    color: var(--ink-faint);
+  }
+  .kcol[data-stage="New"] .kcol-head { color: var(--green); }
+  .kcol[data-stage="Interested"] .kcol-head { color: var(--blue); }
+  .kcol[data-stage="Contacted"] .kcol-head { color: var(--brand); }
+  .kcol[data-stage="Diligence"] .kcol-head { color: var(--amber); }
+  .kcol[data-stage="Under Contract"] .kcol-head { color: var(--green); }
+  .kcol[data-stage="Passed"] .kcol-head { color: var(--ink-faint); }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 11px;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, border-color 0.1s ease;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    border-color: var(--border-strong);
+  }
+  .card.new { border-color: var(--green); box-shadow: 0 0 0 1px var(--green) inset; }
+  .card.new::before {
+    content: "NEW";
+    position: absolute;
+    top: -7px; right: 9px;
+    background: var(--green);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+  }
+  .card-title {
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 7px;
+    color: var(--ink);
+  }
+  .card-loc {
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin-bottom: 9px;
+  }
+  .card-financials {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 9px;
+  }
+  .sde-big { font-size: 15px; font-weight: 700; color: var(--ink); }
+  .sde-big .label {
+    font-size: 9.5px; font-weight: 500; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.06em; display: block;
+  }
+  .mult {
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 3px 7px;
+    border-radius: 5px;
+    background: var(--gray-soft);
+    color: var(--ink-muted);
+  }
+  .mult.good { background: var(--green-soft); color: var(--green); }
+  .mult.bad { background: var(--amber-soft); color: var(--amber); }
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+  }
+  .pri {
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 11.5px;
+  }
+  .pri[data-band="hot"]  { background: var(--green-soft); color: var(--green); }
+  .pri[data-band="warm"] { background: var(--blue-soft); color: var(--blue); }
+  .pri[data-band="cool"] { background: var(--gray-soft); color: var(--ink-muted); }
+  .pri[data-band="cold"] { background: var(--amber-soft); color: var(--amber); }
+  .broker { color: var(--ink-faint); font-size: 10.5px; }
+  .stale { font-size: 10.5px; color: var(--amber); font-weight: 600; }
+  .stale.hot { color: var(--red); }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+  .chip {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 11px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-muted);
+    cursor: pointer;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--border-strong); color: var(--ink); }
+  .chip.active { background: var(--brand); color: white; border-color: var(--brand); }
+  .chip-group-label {
+    font-size: 10.5px; color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 6px 6px 6px 0; font-weight: 600;
+  }
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  table.data th {
+    text-align: left;
+    padding: 10px 12px;
+    background: var(--gray-soft);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  table.data th.sorted::after { content: " ▾"; font-size: 9px; }
+  table.data th.sorted.asc::after { content: " ▴"; }
+  table.data td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  table.data tr:last-child td { border-bottom: 0; }
+  table.data tr:hover td { background: var(--gray-soft); cursor: pointer; }
+  table.data .num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.data .headline { max-width: 400px; }
+  table.data .headline .h { font-weight: 600; font-size: 12.5px; }
+  table.data .headline .sub { font-size: 11px; color: var(--ink-faint); margin-top: 2px; }
+  .table-scroll { overflow-x: auto; border-radius: 10px; }
+
+  .strip-section { margin-bottom: 22px; }
+  .strip-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .strip-title .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .strip-title.price .dot { background: var(--blue); }
+  .strip-title.stale .dot { background: var(--amber); }
+  .strip-title.miss .dot { background: var(--ink-faint); }
+  .strip-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 10px;
+  }
+  .empty {
+    padding: 18px;
+    background: var(--panel);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    color: var(--ink-faint);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .drawer-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.16s ease; z-index: 10;
+  }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer {
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    width: min(500px, 95vw);
+    background: var(--panel);
+    border-left: 1px solid var(--border);
+    box-shadow: -10px 0 32px rgba(15, 23, 42, 0.14);
+    transform: translateX(100%);
+    transition: transform 0.2s ease;
+    z-index: 11;
+    display: flex; flex-direction: column;
+  }
+  .drawer.open { transform: translateX(0); }
+  .drawer-head {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  }
+  .drawer-head .close {
+    background: transparent; border: 0;
+    font-size: 24px; line-height: 1;
+    color: var(--ink-faint); cursor: pointer; padding: 0;
+    font-family: inherit;
+  }
+  .drawer-body { padding: 18px 20px; overflow-y: auto; flex: 1; }
+  .kv {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 6px 16px;
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+  .kv dt { color: var(--ink-faint); font-weight: 500; }
+  .kv dd { margin: 0; color: var(--ink); font-weight: 500; }
+  .sect-h {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 16px 0 7px;
+  }
+  .note {
+    background: var(--gray-soft);
+    padding: 11px 13px;
+    border-radius: 7px;
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.55;
+    white-space: pre-wrap;
+  }
+  .note.user { background: var(--brand-soft); color: var(--brand-ink); font-weight: 500; }
+  .note.empty { color: var(--ink-faint); font-style: italic; }
+  .spark { display: block; width: 100%; height: 50px; margin: 6px 0 4px; }
+  .drawer-actions {
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .btn {
+    background: var(--brand); color: white;
+    border: 0; padding: 9px 15px; border-radius: 7px;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: inherit;
+  }
+  .btn:hover { background: var(--brand-ink); }
+  .btn.ghost {
+    background: transparent; color: var(--ink-muted);
+    border: 1px solid var(--border);
+  }
+  .btn.ghost:hover { color: var(--ink); border-color: var(--border-strong); background: var(--panel); }
+
+  .view { display: none; }
+  .view.active { display: block; }
+
+  footer {
+    margin-top: 30px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 8px;
+  }
+  footer a { color: var(--ink-muted); text-decoration: none; }
+  footer a:hover { color: var(--brand); text-decoration: underline; }
+
+  .loading {
+    padding: 50px 20px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 13px;
+  }
+  .loading .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--brand);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: -4px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 700px) {
+    .wrap { padding: 14px 14px 40px; }
+    h1 { font-size: 17px; }
+    .kanban { grid-auto-columns: 82vw; }
+    .kv { grid-template-columns: 90px 1fr; font-size: 12.5px; }
+    .drawer { width: 100vw; }
+    table.data .headline { max-width: 200px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="title-row">
+      <h1><span class="dot"></span>SE Pest Control — Pipeline</h1>
+      <span class="date-chip" id="date-chip">—</span>
+      <span class="updated" id="updated">—</span>
+    </div>
+    <div class="summary" id="summary"></div>
+  </div>
+
+  <div class="tabs">
+    <button data-view="kanban" class="active">Kanban <span class="count" id="ct-kanban"></span></button>
+    <button data-view="table">Table</button>
+    <button data-view="whats-new">What's new <span class="count" id="ct-new"></span></button>
+  </div>
+
+  <div id="content">
+    <div class="loading"><span class="spinner"></span>Loading pipeline…</div>
+  </div>
+
+  <section class="view" id="view-kanban">
+    <div class="kanban" id="kanban"></div>
+  </section>
+
+  <section class="view" id="view-table">
+    <div class="filters" id="filters"></div>
+    <div class="table-scroll">
+      <table class="data" id="tbl">
+        <thead>
+          <tr>
+            <th data-sort="priority" class="sorted">Pri</th>
+            <th data-sort="your_stage">Stage</th>
+            <th data-sort="headline" class="headline">Business</th>
+            <th data-sort="state">State</th>
+            <th data-sort="asking" class="num">Asking</th>
+            <th data-sort="sde" class="num">SDE</th>
+            <th data-sort="mult_val" class="num">Mult</th>
+            <th data-sort="stale_days" class="num">Stale</th>
+            <th data-sort="broker">Broker</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="view" id="view-whats-new">
+    <div class="strip-section">
+      <h3 class="strip-title"><span class="dot"></span>New this week</h3>
+      <div class="strip-cards" id="strip-new"></div>
+    </div>
+    <div class="strip-section">
+      <h3 class="strip-title price"><span class="dot"></span>Price changes</h3>
+      <div class="strip-cards" id="strip-price"></div>
+    </div>
+    <div class="strip-section">
+      <h3 class="strip-title stale"><span class="dot"></span>Stale follow-ups (7+ days untouched)</h3>
+      <div class="strip-cards" id="strip-stale"></div>
+    </div>
+    <div class="strip-section">
+      <h3 class="strip-title miss"><span class="dot"></span>Missing / removed</h3>
+      <div class="strip-cards" id="strip-miss"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>SE Pest Control acquisition pipeline · Scraped daily at 5am ET · FL/GA/AL/SC/NC/TN · Cash Flow > $200K</span>
+    <span><a href="listings.json">raw JSON</a></span>
+  </footer>
+</div>
+
+<div class="drawer-backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+  <div class="drawer-head">
+    <div>
+      <div id="drawer-title" style="font-size:15px;font-weight:700;line-height:1.3"></div>
+      <div id="drawer-sub" style="font-size:11.5px;color:var(--ink-faint);margin-top:4px"></div>
+    </div>
+    <button class="close" id="drawer-close" aria-label="Close">×</button>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+  <div class="drawer-actions">
+    <a class="btn" id="drawer-link" target="_blank" rel="noopener">View on broker site ↗</a>
+    <button class="btn ghost" id="drawer-share">Copy link</button>
+    <button class="btn ghost" id="drawer-close2">Close</button>
+  </div>
+</aside>
+
+<script>
+const STAGES = ["New", "Interested", "Contacted", "Diligence", "Under Contract", "Passed"];
+
+// ---- helpers ----
+const fmt = (n) => n == null ? "" : "$" + Number(n).toLocaleString();
+const daysBetween = (a, b) => Math.round((new Date(a + "T00:00") - new Date(b + "T00:00")) / 86400000);
+
+let DATA = null;
+
+function priorityFor(l) {
+  if (l.your_stage === "Under Contract") return 78;
+  if (l.your_stage === "Passed") {
+    const h = (l.headline || "").toLowerCase();
+    if (h.includes("landscape") && !h.includes("pest")) return -37;
+    if (h.includes("wildlife")) return -20;
+    return -40;
+  }
+  if (!l.asking || !l.sde) return 40;
+  const m = l.asking / l.sde;
+  if (m < 1.2) return 70;
+  if (m < 2.0) return (l.your_stage === "Interested") ? 60 : 70;
+  if (m < 4.0) return (l.your_stage === "Interested") ? 55 : 50;
+  if (m < 6.5) return 45;
+  return 30;
+}
+function priorityBand(p) {
+  if (p >= 65) return "hot";
+  if (p >= 45) return "warm";
+  if (p >= 30) return "cool";
+  return "cold";
+}
+function stageFor(l) {
+  if (l.your_stage) return l.your_stage;
+  if (l.change === "new") return "New";
+  return "Interested";
+}
+
+function enrich(listings, today) {
+  return listings.map(l => {
+    const e = { ...l };
+    e.priority = priorityFor(e);
+    e.stage = stageFor(e);
+    e.stale_days = e.last_touched ? daysBetween(today, e.last_touched) : null;
+    e.mult_val = (e.asking && e.sde) ? e.asking / e.sde : null;
+    return e;
+  }).sort((a, b) => b.priority - a.priority);
+}
+
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, c =>
+    ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function renderSummary() {
+  const L = DATA.enriched;
+  const newCt = L.filter(l => l.change === "new").length;
+  const priceCt = L.filter(l => l.change === "price-down" || l.change === "price-up").length;
+  const staleCt = L.filter(l => l.stale_days != null && l.stale_days >= 7 && l.your_stage && l.your_stage !== "Passed").length;
+  const active = L.filter(l => l.your_stage !== "Passed").length;
+  const totalSde = L.reduce((s, l) => s + (l.sde || 0), 0);
+  document.getElementById("summary").innerHTML =
+    `<span class="s-pill ${newCt > 0 ? "hot" : ""}"><strong>${newCt}</strong>new</span>` +
+    `<span class="s-pill"><strong>${priceCt}</strong>price Δ</span>` +
+    `<span class="s-pill ${staleCt > 0 ? "hot" : ""}"><strong>${staleCt}</strong>stale 7d+</span>` +
+    `<span class="s-pill"><strong>${active}</strong>active</span>` +
+    `<span class="s-pill"><strong>$${(totalSde/1e6).toFixed(1)}M</strong>combined SDE</span>`;
+  document.getElementById("ct-kanban").textContent = L.length;
+  document.getElementById("ct-new").textContent = newCt + priceCt + staleCt;
+}
+
+function cardHtml(l) {
+  const mult = l.mult_val;
+  const multCls = mult == null ? "" : mult < 2 ? "good" : mult > 5 ? "bad" : "";
+  const multTxt = mult == null ? "—" : mult.toFixed(1) + "x";
+  const staleTag = (l.stale_days != null && l.stale_days >= 7 && l.your_stage && l.your_stage !== "Passed")
+    ? `<span class="stale ${l.stale_days >= 14 ? "hot" : ""}">${l.stale_days}d stale</span>`
+    : "";
+  return `
+    <div class="card ${l.change === "new" ? "new" : ""}" data-id="${l.id}">
+      <div class="card-title">${escapeHtml(l.headline)}</div>
+      <div class="card-loc">${escapeHtml(l.city)}, ${l.state} · ${escapeHtml(l.broker)}</div>
+      <div class="card-financials">
+        <div class="sde-big"><span class="label">SDE</span>${fmt(l.sde)}</div>
+        <div class="mult ${multCls}">${multTxt}</div>
+      </div>
+      <div class="card-bottom">
+        <span class="pri" data-band="${priorityBand(l.priority)}" title="Priority ${l.priority}">P ${l.priority}</span>
+        ${staleTag}
+        <span class="broker">${fmt(l.asking)}</span>
+      </div>
+    </div>`;
+}
+
+function renderKanban() {
+  const root = document.getElementById("kanban");
+  root.innerHTML = "";
+  STAGES.forEach(stage => {
+    const items = DATA.enriched.filter(l => l.stage === stage);
+    if (items.length === 0 && stage === "Diligence") return;
+    const col = document.createElement("div");
+    col.className = "kcol";
+    col.dataset.stage = stage;
+    col.innerHTML = `
+      <div class="kcol-head"><span>${stage}</span><span class="ct">${items.length}</span></div>
+      ${items.map(cardHtml).join("")}
+      ${items.length === 0 ? '<div style="font-size:11.5px;color:var(--ink-faint);text-align:center;padding:20px 6px;font-style:italic">—</div>' : ""}
+    `;
+    root.appendChild(col);
+  });
+}
+
+// ---- Table ----
+const FILTERS = { state: null, stage: null };
+let SORT = { key: "priority", asc: false };
+
+function renderFilters() {
+  const L = DATA.enriched;
+  const states = Array.from(new Set(L.map(l => l.state))).sort();
+  const stages = STAGES.filter(s => L.some(l => l.stage === s));
+  const root = document.getElementById("filters");
+  root.innerHTML = `
+    <span class="chip-group-label">State</span>
+    ${states.map(s => `<span class="chip ${FILTERS.state===s?"active":""}" data-filter="state" data-val="${s}">${s}</span>`).join("")}
+    <span style="width:10px"></span>
+    <span class="chip-group-label">Stage</span>
+    ${stages.map(s => `<span class="chip ${FILTERS.stage===s?"active":""}" data-filter="stage" data-val="${s}">${s}</span>`).join("")}
+    ${(FILTERS.state || FILTERS.stage) ? `<span class="chip" data-filter="clear">Clear ×</span>` : ""}
+  `;
+  root.querySelectorAll(".chip").forEach(c => c.addEventListener("click", () => {
+    const f = c.dataset.filter, v = c.dataset.val;
+    if (f === "clear") { FILTERS.state = null; FILTERS.stage = null; }
+    else { FILTERS[f] = FILTERS[f] === v ? null : v; }
+    renderFilters(); renderTable();
+  }));
+}
+
+function renderTable() {
+  let rows = DATA.enriched.slice();
+  if (FILTERS.state) rows = rows.filter(l => l.state === FILTERS.state);
+  if (FILTERS.stage) rows = rows.filter(l => l.stage === FILTERS.stage);
+  rows.sort((a, b) => {
+    const av = a[SORT.key], bv = b[SORT.key];
+    if (av == null && bv == null) return 0;
+    if (av == null) return 1;
+    if (bv == null) return -1;
+    if (typeof av === "number") return SORT.asc ? av - bv : bv - av;
+    return SORT.asc ? String(av).localeCompare(String(bv)) : String(bv).localeCompare(String(av));
+  });
+  const tbody = document.querySelector("#tbl tbody");
+  tbody.innerHTML = rows.map(l => `
+    <tr data-id="${l.id}">
+      <td><span class="pri" data-band="${priorityBand(l.priority)}">${l.priority}</span></td>
+      <td>${l.your_stage ? escapeHtml(l.your_stage) : '<span style="color:var(--ink-faint);font-style:italic">unset</span>'}</td>
+      <td class="headline">
+        <div class="h">${escapeHtml(l.headline)}${l.change === "new" ? ' <span style="background:var(--green);color:white;font-size:9px;padding:1px 4px;border-radius:3px;vertical-align:middle;margin-left:4px">NEW</span>' : ""}</div>
+        <div class="sub">${escapeHtml(l.city)} · ${escapeHtml(l.broker)}</div>
+      </td>
+      <td>${l.state}</td>
+      <td class="num">${fmt(l.asking)}</td>
+      <td class="num">${fmt(l.sde)}</td>
+      <td class="num">${l.mult_val == null ? "—" : l.mult_val.toFixed(1) + "x"}</td>
+      <td class="num">${l.stale_days == null ? "—" : l.stale_days + "d"}</td>
+      <td>${escapeHtml(l.broker)}</td>
+    </tr>`).join("");
+  document.querySelectorAll("#tbl th").forEach(th => {
+    th.classList.remove("sorted", "asc");
+    if (th.dataset.sort === SORT.key) {
+      th.classList.add("sorted");
+      if (SORT.asc) th.classList.add("asc");
+    }
+  });
+}
+
+document.querySelectorAll("#tbl th").forEach(th => th.addEventListener("click", () => {
+  const k = th.dataset.sort;
+  if (SORT.key === k) SORT.asc = !SORT.asc;
+  else { SORT.key = k; SORT.asc = false; }
+  renderTable();
+}));
+
+// ---- What's new ----
+function renderStrip() {
+  const L = DATA.enriched;
+  const newItems = L.filter(l => l.change === "new");
+  const priceItems = L.filter(l => l.change === "price-down" || l.change === "price-up");
+  const staleItems = L.filter(l => l.stale_days != null && l.stale_days >= 7 && l.your_stage && l.your_stage !== "Passed");
+  const missItems = L.filter(l => l.change === "missing" || l.change === "removed");
+  const fill = (id, items) => {
+    const el = document.getElementById(id);
+    el.innerHTML = items.length === 0 ? '<div class="empty">Nothing here today</div>' : items.map(cardHtml).join("");
+  };
+  fill("strip-new", newItems);
+  fill("strip-price", priceItems);
+  fill("strip-stale", staleItems);
+  fill("strip-miss", missItems);
+}
+
+// ---- Sparkline ----
+function sparkline(history, key = "asking") {
+  if (!history || history.length < 2) return "";
+  const pts = history.map(h => h[key]).filter(v => v != null);
+  if (pts.length < 2) return "";
+  const min = Math.min(...pts), max = Math.max(...pts);
+  const range = max - min || 1;
+  const W = 200, H = 40, P = 3;
+  const step = (W - 2*P) / (pts.length - 1);
+  const coords = pts.map((v, i) => [P + i*step, H - P - ((v - min) / range) * (H - 2*P)]);
+  const path = coords.map((c, i) => (i === 0 ? "M" : "L") + c[0].toFixed(1) + "," + c[1].toFixed(1)).join(" ");
+  const area = path + ` L${P + (pts.length-1)*step},${H-P} L${P},${H-P} Z`;
+  const first = pts[0], last = pts[pts.length-1];
+  const delta = last - first;
+  const pct = first > 0 ? (delta/first*100).toFixed(1) : "0";
+  const col = delta < 0 ? "var(--green)" : delta > 0 ? "var(--amber)" : "var(--ink-faint)";
+  return `
+    <svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-label="${key} history">
+      <path d="${area}" fill="${col}" opacity="0.12" />
+      <path d="${path}" fill="none" stroke="${col}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" />
+      ${coords.map(c => `<circle cx="${c[0].toFixed(1)}" cy="${c[1].toFixed(1)}" r="2" fill="${col}" />`).join("")}
+    </svg>
+    <div style="font-size:10.5px;color:var(--ink-faint);margin-top:-2px">
+      ${key}: ${fmt(first)} → ${fmt(last)}${delta === 0 ? " (flat)" : ` (${delta > 0 ? "+" : ""}${pct}%)`}
+    </div>`;
+}
+
+// ---- Drawer ----
+function openDrawer(id) {
+  const l = DATA.enriched.find(x => x.id === id);
+  if (!l) return;
+  document.getElementById("drawer-title").textContent = l.headline;
+  document.getElementById("drawer-sub").textContent = `${l.city}, ${l.state} · ${l.broker} · ${l.id}`;
+  document.getElementById("drawer-link").href = l.url;
+  document.getElementById("drawer-body").innerHTML = `
+    <dl class="kv">
+      <dt>Asking</dt><dd>${fmt(l.asking)}</dd>
+      <dt>SDE</dt><dd>${fmt(l.sde)}</dd>
+      <dt>Revenue</dt><dd>${l.revenue ? fmt(l.revenue) : "ND"}</dd>
+      <dt>SDE multiple</dt><dd>${l.mult_val == null ? "—" : l.mult_val.toFixed(2) + "x"}</dd>
+      <dt>Priority</dt><dd><span class="pri" data-band="${priorityBand(l.priority)}">${l.priority}</span></dd>
+      <dt>Your stage</dt><dd>${l.your_stage || '<em style="color:var(--ink-faint)">unset</em>'}</dd>
+      <dt>Last touched</dt><dd>${l.last_touched || "—"}${l.stale_days != null ? ` · <span class="${l.stale_days >= 14 ? "stale hot" : "stale"}">${l.stale_days}d ago</span>` : ""}</dd>
+      <dt>First seen</dt><dd>${l.first_seen}</dd>
+    </dl>
+
+    ${(l.price_history && l.price_history.length >= 2) ? `
+      <div class="sect-h">Asking price history</div>
+      ${sparkline(l.price_history, "asking")}
+      <div class="sect-h" style="margin-top:14px">SDE history</div>
+      ${sparkline(l.price_history, "sde")}
+    ` : ""}
+
+    <div class="sect-h">Your notes</div>
+    <div class="note user ${l.user_notes ? "" : "empty"}">${l.user_notes ? escapeHtml(l.user_notes) : "— none yet —"}</div>
+
+    <div class="sect-h">Scrape notes</div>
+    <div class="note">${escapeHtml(l.scrape_notes)}</div>
+
+    <div class="sect-h">Priority breakdown</div>
+    <div class="note">${priorityExplain(l)}</div>
+  `;
+  document.getElementById("drawer").classList.add("open");
+  document.getElementById("backdrop").classList.add("open");
+  if (location.hash !== "#listing=" + id) {
+    history.replaceState(null, "", "#listing=" + id);
+  }
+  document.title = l.headline.slice(0, 60) + " — SE Pest Control";
+}
+
+function closeDrawer() {
+  document.getElementById("drawer").classList.remove("open");
+  document.getElementById("backdrop").classList.remove("open");
+  if (location.hash.startsWith("#listing=")) {
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+  document.title = "SE Pest Control — Pipeline";
+}
+document.getElementById("drawer-close").addEventListener("click", closeDrawer);
+document.getElementById("drawer-close2").addEventListener("click", closeDrawer);
+document.getElementById("backdrop").addEventListener("click", closeDrawer);
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+
+document.getElementById("drawer-share").addEventListener("click", async () => {
+  const btn = document.getElementById("drawer-share");
+  const orig = btn.textContent;
+  try {
+    await navigator.clipboard.writeText(location.href);
+    btn.textContent = "Copied ✓";
+  } catch {
+    btn.textContent = "Copy failed";
+  }
+  setTimeout(() => { btn.textContent = orig; }, 1400);
+});
+
+function priorityExplain(l) {
+  if (l.your_stage === "Under Contract") return "Fixed at 78 — under contract.";
+  if (l.your_stage === "Passed") return `Negative band because you marked it Passed (${l.user_notes || "no reason noted"}).`;
+  const bits = [];
+  if (l.mult_val != null) {
+    const m = l.mult_val;
+    if (m < 1.2) bits.push(`SDE multiple ${m.toFixed(2)}x — under 1.2x, exceptional value → 70`);
+    else if (m < 2.0) bits.push(`SDE multiple ${m.toFixed(2)}x — tight → 60-70`);
+    else if (m < 4.0) bits.push(`SDE multiple ${m.toFixed(2)}x — reasonable → 50-55`);
+    else if (m < 6.5) bits.push(`SDE multiple ${m.toFixed(2)}x — high → 45`);
+    else bits.push(`SDE multiple ${m.toFixed(2)}x — expensive → 30`);
+  } else {
+    bits.push("No asking×SDE data → baseline 40");
+  }
+  if (l.your_stage === "Interested") bits.push("Interested stage softens multiples in the 2-4x band.");
+  return bits.join(" · ") + ` → ${l.priority}.`;
+}
+
+// ---- Tabs ----
+document.querySelectorAll(".tabs button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tabs button").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  document.getElementById("view-" + b.dataset.view).classList.add("active");
+}));
+
+// ---- Click delegation ----
+document.addEventListener("click", (e) => {
+  const row = e.target.closest("tr[data-id]");
+  const card = e.target.closest(".card[data-id]");
+  if (row) openDrawer(row.dataset.id);
+  else if (card) openDrawer(card.dataset.id);
+});
+
+// ---- Hash routing ----
+function handleHash() {
+  const m = location.hash.match(/^#listing=(.+)$/);
+  if (m && DATA) openDrawer(decodeURIComponent(m[1]));
+}
+window.addEventListener("hashchange", handleHash);
+
+// ---- Boot ----
+(async () => {
+  try {
+    const res = await fetch("./listings.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const json = await res.json();
+    DATA = { ...json, enriched: enrich(json.listings, json.scrape_date) };
+
+    document.getElementById("date-chip").textContent = json.scrape_date;
+    const gen = new Date(json.generated_at);
+    document.getElementById("updated").textContent = "Updated " + gen.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+
+    renderSummary();
+    renderKanban();
+    renderFilters();
+    renderTable();
+    renderStrip();
+
+    document.getElementById("content").remove();
+    document.getElementById("view-kanban").classList.add("active");
+    handleHash();
+  } catch (err) {
+    document.getElementById("content").innerHTML = `
+      <div class="empty" style="padding:30px">
+        Could not load <code>listings.json</code>: ${escapeHtml(err.message)}<br>
+        <small>If you're running locally, serve the folder with e.g. <code>python3 -m http.server</code>.</small>
+      </div>`;
+  }
+})();
+</script>
+</body>
+</html>
